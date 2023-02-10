@@ -28,6 +28,50 @@ class Api {
     .then(this._checkError);
   }
 
+  likeCardStatus(id, isLiked) {
+    if (isLiked) {
+        return fetch(`${this._baseURL}/cards/${id}/likes`, {
+            method: "PUT",
+            headers: this._headers,
+        }).then(this._checkError)
+    } else {
+        return fetch(`${this._baseURL}/cards/${id}/likes`, {
+            method: "DELETE",
+            headers: this._headers,
+        }).then(this._checkError)
+    }
+  }
+
+  deleteCard(id) {
+    return fetch(`${this._baseURL}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers
+    })
+    .then(this._checkError)
+  }
+
+  editUser(dataUser) {
+    return fetch(`${this._baseURL}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: dataUser.name,
+        about: dataUser.about
+      })
+    })
+    .then(this._checkError);
+  }
+
+  editAvatar(data) {
+    return fetch(`${this._baseURL}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: data
+      })
+    })
+    .then(this._checkError);
+  }
   /*postCreateCard(dataCard) {
     return fetch(`${this._baseURL}/cards`, {
       method: "POST",
