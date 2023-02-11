@@ -2,10 +2,10 @@ import React from 'react';
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
-import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
+import AddPlacePopup from "./AddPlacePopup.js";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import api from "../utils/api.js";
 
@@ -44,12 +44,12 @@ function App() {
   }
 
   const getInfo = () => api.getUserInfo() 
-  .then((userInfo) => { 
-    setCurrentUser(userInfo);
-  })
-  .catch((err) => { 
-    console.log(err); 
-  });
+    .then((userInfo) => { 
+      setCurrentUser(userInfo);
+    })
+    .catch((err) => { 
+      console.log(err); 
+    });
 
   const getCards = () => api.getInitialCard()
     .then((Cards) => { 
@@ -78,7 +78,7 @@ function App() {
       });
   }
 
-  function handleCardDelete(card) {
+ const handleCardDelete = (card) => {
     api
       .deleteCard(card._id)
         .then(() => {
@@ -90,22 +90,20 @@ function App() {
           console.log(err);
         });
   }
-
     
-  function handleUpdateUser(userData) {
+  const handleUpdateUser = (userData) => {
     api
       .editUser(userData)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
-        console.log(data)
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  function handleUpdateAvatar({ avatar }) {
+  const handleUpdateAvatar = ({ avatar }) => {
     api
       .editAvatar(avatar)
       .then((data) => {
@@ -116,6 +114,18 @@ function App() {
         console.log(err);
       });
   }
+
+  const handleAddCard = ({ name, link }) => {
+    api
+      .postCreateCard({ name, link })
+      .then((newCard) => {
+        setCards((cards) => [newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -146,44 +156,12 @@ function App() {
       onClose={closeAllPopups} 
       onUpdateAvatar={handleUpdateAvatar}
     /> 
-    <PopupWithForm
+
+    <AddPlacePopup
       isOpen={isAddPlacePopupOpen}
       onClose={closeAllPopups}
-      name="add-card"
-      title="Новое место"
-      buttonText="Создать">  
-
-      <label className="form__field">
-        <input 
-          name="mestoName" 
-          type="text"
-          placeholder="Название" 
-          className="form__input form__input_theme_mestoName"
-          minlength="2"
-          maxlength="30"
-          required/>
-        <span
-          className="form__error form__input-error-mestoName">
-        </span>
-      </label>
-      <label className="form__field">
-        <input 
-          name="mestoURL" 
-          type="url"
-          placeholder="Ссылка на картинку"
-          className="form__input form__input_theme_mestoURL"
-          required/>
-        <span
-          className="form__error form__input-error-mestoURL">
-        </span>
-      </label> 
-    </PopupWithForm>
-
-    <PopupWithForm
-      name="confirmation"
-      title="Вы уверены?"
-      buttonText="Да">  
-    </PopupWithForm>
+      onAddPlace={handleAddCard}
+    />
 
     <ImagePopup
       name="open-card"

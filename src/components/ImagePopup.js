@@ -1,17 +1,17 @@
 import React from "react";
 
-function ImagePopup(props) {
-  const { name, card, isOpen, onClose } = props;
+const ImagePopup = (props) => {
+
   return (
-    <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
-      <div className={`popup__container popup__container_type_${name}`}>
+    <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : ''}`}>
+      <div className={`popup__container popup__container_type_${props.name}`}>
         <button
           type="button"
           className="popup__button-close popup__button-close_type-card"
           aria-label="Закрыть форму"
-          onClick={onClose}/>
-        <img className="popup__image" src={card.link} alt={card.name}/>
-        <p className="popup__subtitle">{card.name}</p>
+          onClick={props.onClose}/>
+        <img className="popup__image" src={props.card.link} alt={props.card.name}/>
+        <p className="popup__subtitle">{props.card.name}</p>
       </div>
     </div>
   ); 

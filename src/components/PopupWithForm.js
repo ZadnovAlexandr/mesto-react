@@ -1,29 +1,29 @@
 import React from "react";
 
-function PopupWithForm(props) {
-  const { name, title, children, buttonText, isOpen, onClose, onSubmit } = props;
+const PopupWithForm = (props) => {
+ 
   return (
-    <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
+    <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : ''}`}>
       <div className="popup__container">
         <button
           type="button"
           aria-label="Закрыть форму" 
           className="popup__button-close"
-          onClick={onClose}
+          onClick={props.onClose}
         />
-        <h2 className="popup__title">{title}</h2>
+        <h2 className="popup__title">{props.title}</h2>
         <form 
-          className={`form form_type_${name}`} 
-          name={name} 
+          className={`form form_type_${props.name}`} 
+          name={props.name} 
           novalidate
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         >
-          {children}
+          {props.children}
           <button 
             type="submit"  
             aria-label="Создать" 
             className="form__button-save">
-            {buttonText}
+            {props.buttonText}
           </button>
         </form>
       </div>

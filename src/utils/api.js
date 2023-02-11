@@ -72,6 +72,18 @@ class Api {
     })
     .then(this._checkError);
   }
+
+  postCreateCard(dataCard) {
+    return fetch(`${this._baseURL}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: dataCard.name,
+        link: dataCard.link
+      })
+    })
+    .then(this._checkError);
+  }
   /*postCreateCard(dataCard) {
     return fetch(`${this._baseURL}/cards`, {
       method: "POST",
